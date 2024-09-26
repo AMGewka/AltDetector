@@ -120,7 +120,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Error getting database connection: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка при подключении к базе данных: " + e.getMessage());
             //e.printStackTrace();
         }
         return null;
@@ -137,13 +137,13 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(statement))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.execute();
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error executing statement: " + statement + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при выполнении оператора: " + statement + ": " + e.getMessage());
         }
         
         return success;
@@ -160,7 +160,7 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(sqlVersion)))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next())
@@ -170,7 +170,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving SQL version: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при получении версии SQL: " + e.getMessage());
         }
         
         return version;
@@ -195,7 +195,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving driver version: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при получении версии драйвера: " + e.getMessage());
         }
         
         return version;
@@ -212,7 +212,7 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(getAllNames)))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next())
@@ -222,7 +222,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving player list from playertable: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при получении списка игроков из playertable: " + e.getMessage());
         }
         
         return;
@@ -252,12 +252,12 @@ public abstract class Database
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(purgeByDate1)))
         {
             stmt.setString(1, formatExpirationTime(expirationTime));
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             recordsPurged = stmt.executeUpdate();
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error purging records: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при очистке записей: " + e.getMessage());
         }
         
         // Now delete playertable entries with no children
@@ -265,13 +265,13 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(purgeByDate2)))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             int recordsPurged2 = stmt.executeUpdate();
-            if (debug) {plugin.getLogger().info(recordsPurged2 + " playertable entries deleted");}
+            if (debug) {plugin.getLogger().info(recordsPurged2 + " записей playertable удалены");}
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error purging playertable: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при очистке playertable: " + e.getMessage());
         }
         
         return recordsPurged;
@@ -298,12 +298,12 @@ public abstract class Database
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(purgeByName)))
         {
             stmt.setString(1, name);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             recordsPurged = stmt.executeUpdate();
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error purging records for " + name + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при очистке записей для " + name + ": " + e.getMessage());
         }
         
         return recordsPurged;
@@ -324,7 +324,7 @@ public abstract class Database
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(getNameByUuid)))
         {
             stmt.setString(1, uuid);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next())
@@ -334,7 +334,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving name from playertable for " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении имени из playertable для " + uuid + ": " + e.getMessage());
         }
         
         return name;
@@ -353,14 +353,14 @@ public abstract class Database
         {
             stmt.setString(1, uuid);
             stmt.setString(2, name);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.executeUpdate();
             playerList.add(name.toLowerCase()); // add to playerList
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error adding playertable entry for " + name + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при добавлении записи playertable для " + name + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -379,14 +379,14 @@ public abstract class Database
         {
             stmt.setString(1, name);
             stmt.setString(2, uuid);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.executeUpdate();
             playerList.add(name.toLowerCase()); // add to playerList
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error updating playertable entry for " + name + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при обновлении записи playertable для " + name + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -406,7 +406,7 @@ public abstract class Database
         {
             stmt.setString(1, ip);
             stmt.setString(2, uuid);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
             
             resultSet.next();
@@ -414,7 +414,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving name from playertable entry for " + ip + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении имени из записи playertable для " + ip + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -434,13 +434,13 @@ public abstract class Database
         {
             stmt.setString(1, ip);
             stmt.setString(2, uuid);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.executeUpdate();
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error adding iptable entry for " + ip + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при добавлении записи iptable для " + ip + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -460,13 +460,13 @@ public abstract class Database
         {
             stmt.setString(1, ip);
             stmt.setString(2, uuid);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.executeUpdate();
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error updating iptable entry for " + ip + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при обновлении записи iptable для " + ip + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -488,13 +488,13 @@ public abstract class Database
             stmt.setString(1, ip);
             stmt.setString(2, uuid);
             stmt.setLong(3, unixdate);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             stmt.executeUpdate();
             success = true;
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error adding iptable entry with date for " + ip + " and " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при добавлении записи iptable с датой " + ip + " и " + uuid + ": " + e.getMessage());
         }
         
         return success;
@@ -515,7 +515,7 @@ public abstract class Database
             stmt.setString(1, uuid);
             stmt.setString(2, excludeUuid);
             stmt.setString(3, formatExpirationTime(expirationTime));
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next())
@@ -525,7 +525,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving list of names from playertable for " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении списка имен из playertable для " + uuid + ": " + e.getMessage());
         }
         
         return altList;
@@ -553,7 +553,7 @@ public abstract class Database
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(getOfflinePlayer)))
         {
             stmt.setString(1, name);
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next())
@@ -565,7 +565,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving offline player from playertable for " + name + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении офлайн-плеера из playertable для " + name + ": " + e.getMessage());
         }
         
         return playerData;
@@ -632,7 +632,7 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(getPlayertable)))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next())
@@ -645,7 +645,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving Playertable: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении Playertable: " + e.getMessage());
         }
         
         return playertable;
@@ -673,7 +673,7 @@ public abstract class Database
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(replacePrefix(getIptable)))
         {
-            if (debug) {plugin.getLogger().info("Executing statement: " + stmt.toString());}
+            if (debug) {plugin.getLogger().info("Выполнение заявления: " + stmt.toString());}
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next())
@@ -687,7 +687,7 @@ public abstract class Database
         }
         catch (SQLException e)
         {
-            plugin.getLogger().warning("Database error retrieving Playertable: " + e.getMessage());
+            plugin.getLogger().warning("Ошибка базы данных при извлечении Playertable: " + e.getMessage());
         }
         
         return iptable;

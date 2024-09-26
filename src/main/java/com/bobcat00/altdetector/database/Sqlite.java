@@ -62,7 +62,7 @@ public class Sqlite extends Database
     
     String formatExpirationTime(int expirationTime)
     {
-        return "-" + expirationTime + " days"; // negative value
+        return "-" + expirationTime + " дней"; // negative value
     }
     
     // -------------------------------------------------------------------------
@@ -83,7 +83,7 @@ public class Sqlite extends Database
             }
             catch (IOException e)
             {
-                plugin.getLogger().warning("Unable to create database file: " + e.getMessage());
+                plugin.getLogger().warning("Невозможно создать файл базы данных: " + e.getMessage());
                 return false;
             }
         }

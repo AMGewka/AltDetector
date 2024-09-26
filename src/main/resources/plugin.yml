@@ -1,9 +1,9 @@
 name: AltDetector
 main: com.bobcat00.altdetector.AltDetector
 version: ${project.version}
-author: Bobcat00
+authors: [Bobcat00, AMGewka]
 description: Detects possible alt accounts
-api-version: 1.13
+api-version: 1.20.1
 softdepend: [PremiumVanish, SuperVanish]
 commands:
   alt:

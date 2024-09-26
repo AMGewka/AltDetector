@@ -66,7 +66,7 @@ public class AltDetector extends JavaPlugin
         
         if (initSuccessful)
         {
-            getLogger().info("Using " + database.toString() + " database, version " + database.getSqlVersion() + ", driver version " + database.getDriverVersion());
+            getLogger().info("Используется БД: " + database.toString() + ", версия: " + database.getSqlVersion() + ", версия драйвера: " + database.getDriverVersion());
             
             // Database conversion
             
@@ -85,14 +85,14 @@ public class AltDetector extends JavaPlugin
                 break;
                 
             case ERROR:
-                getLogger().warning("Invalid convert-from database conversion option specified in config.yml.");
+                getLogger().warning("Неверный параметр преобразования базы данных convert-from указан в config.yml.");
                 break;
             }
             
             // Database purge
             
             int entriesRemoved = database.purge(expirationTime);
-            getLogger().info(entriesRemoved + " record" + (entriesRemoved == 1 ? "" : "s") + " removed, expiration time " + expirationTime + " days.");
+            getLogger().info(entriesRemoved + " записей" + (entriesRemoved == 1 ? "" : "s") + " удалено, срок годности " + expirationTime + " дней.");
             
             // Generate player list
             database.generatePlayerList();
@@ -100,7 +100,7 @@ public class AltDetector extends JavaPlugin
         else
         {
             // Database init failed
-            getLogger().warning("Initialization of " + database.toString() + " database failed.");
+            getLogger().warning("Инициализация базы данных " + database.toString() + " не удалась.");
         }
         
         // Listeners
@@ -117,7 +117,7 @@ public class AltDetector extends JavaPlugin
         if (Bukkit.getPluginManager().isPluginEnabled("PremiumVanish") || Bukkit.getPluginManager().isPluginEnabled("SuperVanish"))
         {
             superVanish = true;
-            getLogger().info("PremiumVanish/SuperVanish integration enabled.");
+            getLogger().info("Интеграция PremiumVanish/SuperVanish включена.");
         }
         
         // Metrics
@@ -143,7 +143,7 @@ public class AltDetector extends JavaPlugin
         metrics.addCustomChart(new SimplePie("database_type",   () -> database.toString()));
         metrics.addCustomChart(new SimplePie("supervanish",     () -> superVanish ? "Yes" : "No"));
 
-        getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
+        getLogger().info("Метрики включены, если это разрешено в plugins/bStats/config.yml");
     }
     
     // -------------------------------------------------------------------------
@@ -158,7 +158,7 @@ public class AltDetector extends JavaPlugin
         if (convertFrom == ConvertFromType.YML)
         {
             // Convert from YAML
-            getLogger().info("Converting from YML to " + database.toString() + " database. This may take a while, please be patient.");
+            getLogger().info("Конвертация из YML в " + database.toString() + " базу данных. Это может занять некоторое время, пожалуйста, будьте терпеливы.");
             ConvertYaml convertYml = new ConvertYaml(this);
             conversionSuccessful = convertYml.convert();
         }
@@ -180,19 +180,19 @@ public class AltDetector extends JavaPlugin
                 boolean initSuccessful = oldDb.initialize();
                 if (initSuccessful)
                 {
-                    getLogger().info("Converting from " + oldDb.toString() + " to " + database.toString() + " database. This may take a while, please be patient.");
+                    getLogger().info("Конвертация из " + oldDb.toString() + " в " + database.toString() + " базу данных. Это может занять некоторое время, пожалуйста, будьте терпеливы.");
                     ConvertSql convertSql = new ConvertSql(this);
                     conversionSuccessful = convertSql.convert(oldDb, database);
                 }
                 else
                 {
-                    getLogger().warning("Initialization of " + oldDb.toString() + " database failed.");
+                    getLogger().warning("Инициализация базы данных " + oldDb.toString() + " не удалась.");
                 }
                 oldDb.closeDataSource(); // only opened databases should be closed
             }
             else
             {
-                getLogger().warning("Invalid database conversion options specified in config.yml.");
+                getLogger().warning("В config.yml указаны неверные параметры преобразования базы данных.");
             }
         }
         
@@ -201,11 +201,11 @@ public class AltDetector extends JavaPlugin
             // Set to not convert in the future
             getConfig().set("convert-from", "none");
             config.saveConfig();
-            getLogger().info("Successfully converted to " + database.toString() + " database.");
+            getLogger().info("Успешно преобразовано в базу данных " + database.toString() + ".");
         }
         else
         {
-            getLogger().warning("Conversion to " + database.toString() + " database failed. Old data not converted.");
+            getLogger().warning("Конвертация в базу данных " + database.toString() + " не удалось. Старые данные не преобразованы.");
         }
         
     }
